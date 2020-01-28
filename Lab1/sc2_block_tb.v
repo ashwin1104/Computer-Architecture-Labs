@@ -4,7 +4,7 @@ module sc2_test;
 
     wire s_out, c_out;
 
-    sc2_block sc1(s_out, c_out, a_in, b_in, c_in)
+    sc2_block sc1 (s_out, c_out, a_in, b_in, c_in);
 
     initial begin
 
