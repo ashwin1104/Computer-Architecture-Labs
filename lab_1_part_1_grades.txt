@@ -1,0 +1,31 @@
+Grades for version committed on time
+	sc2_block: 10.0 / 10
+			*Passed test: a = 0 b = 0 cin = 0
+			*Passed test: a = 0 b = 0 cin = 1
+			*Passed test: a = 0 b = 1 cin = 0
+			*Passed test: a = 0 b = 1 cin = 1
+			*Passed test: a = 1 b = 0 cin = 0
+			*Passed test: a = 1 b = 0 cin = 1
+			*Passed test: a = 1 b = 1 cin = 0
+			*Passed test: a = 1 b = 1 cin = 1
+		
+	farmer: 5.62 / 10
+			*Passed test: 0
+			*Passed test: 1
+			*Failed test: 2
+			*Failed test: 3
+			*Passed test: 4
+			*Failed test: 5
+			*Passed test: 6
+			*Passed test: 7
+			*Passed test: 8
+			*Failed test: 9
+			*Passed test: 10
+			*Failed test: 11
+			*Failed test: 12
+			*Passed test: 13
+			*Passed test: 14
+		
+Total: 15.62 / 20
+
+Final Score: 15.62 / 20
