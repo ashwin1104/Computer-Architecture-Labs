@@ -19,7 +19,17 @@ char *extractMessage(const char *message_in, int length) {
    		message_out[i] = 0;    // Initialize all elements to zero.
 	}
 
-	// TODO: write your code here
+	int num_blocks = length/8;
+  int num_chars = 8;
+  for (int i = 0; i < num_blocks; i++) {
+    for (in j = 0; j < num_chars; j++) {
+      unsigned char temp;
+      for (int k = 0; k < num_chars; k++) {
+        temp += ((message_in[num_chars - k - 1] & (int)pow(2, j)) >> k);
+      }
+      message_out[(i*num_chars) + j] = temp;
+    }
+  }
 
 	return message_out;
 }
