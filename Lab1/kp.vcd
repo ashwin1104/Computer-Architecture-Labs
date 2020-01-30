@@ -1,0 +1,160 @@
+$date
+	Thu Jan 30 15:46:20 2020
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module keypad_test $end
+$var wire 1 ! valid $end
+$var wire 4 " number [3:0] $end
+$var wire 7 # inputs [6:0] $end
+$var reg 1 $ a $end
+$var reg 1 % b $end
+$var reg 1 & c $end
+$var reg 1 ' d $end
+$var reg 1 ( e $end
+$var reg 1 ) f $end
+$var reg 1 * g $end
+$scope module kp $end
+$var wire 1 $ a $end
+$var wire 1 % b $end
+$var wire 1 & c $end
+$var wire 1 ' d $end
+$var wire 1 ( e $end
+$var wire 1 + eight $end
+$var wire 1 ) f $end
+$var wire 1 , five $end
+$var wire 1 - four $end
+$var wire 1 * g $end
+$var wire 1 . nine $end
+$var wire 1 / one $end
+$var wire 1 0 seven $end
+$var wire 1 1 six $end
+$var wire 1 2 three $end
+$var wire 1 3 two $end
+$var wire 1 ! valid $end
+$var wire 1 4 zero $end
+$var wire 4 5 number [3:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b0 5
+04
+03
+02
+01
+00
+0/
+0.
+0-
+0,
+0+
+0*
+0)
+0(
+0'
+0&
+0%
+0$
+b0 #
+b0 "
+0!
+$end
+#10
+b1 "
+b1 5
+1!
+1/
+1'
+b1001000 #
+1$
+#20
+b10 "
+b10 5
+13
+0/
+1%
+b101000 #
+0$
+#30
+b11 "
+b11 5
+12
+03
+1&
+b11000 #
+0%
+#40
+b100 "
+b100 5
+1-
+02
+1(
+1$
+0'
+b1000100 #
+0&
+#50
+b101 "
+b101 5
+1,
+0-
+1%
+b100100 #
+0$
+#60
+b110 "
+b110 5
+11
+0,
+1&
+b10100 #
+0%
+#70
+10
+b111 "
+b111 5
+01
+1)
+1$
+0(
+b1000010 #
+0&
+#80
+b1000 "
+b1000 5
+1+
+00
+1%
+b100010 #
+0$
+#90
+b1001 "
+b1001 5
+1.
+0+
+1&
+b10010 #
+0%
+#100
+b0 "
+b0 5
+14
+0.
+1*
+1%
+0)
+b100001 #
+0&
+#110
+0!
+04
+0*
+b0 #
+0%
+#120
