@@ -19,17 +19,25 @@ char *extractMessage(const char *message_in, int length) {
    		message_out[i] = 0;    // Initialize all elements to zero.
 	}
 
+// my code below
+
 	int num_blocks = length/8;
   int num_chars = 8;
+
   for (int i = 0; i < num_blocks; i++) {
-    for (in j = 0; j < num_chars; j++) {
-      unsigned char temp;
+    unsigned char and_op = 1;
+    for (int j = 0; j < num_chars; j++) {
+      unsigned char temp = 0;
       for (int k = 0; k < num_chars; k++) {
         unsigned char temp2;
-        temp2 = ((message_in[num_chars - k - 1] & (int)pow(2, j)) >> k);
+        temp2 = (((message_in[i*num_chars + k]&and_op) >> j) << k);
+        // std::cout << message_in[k] << std::endl;
+        // std::cout << k << ": " << temp << " " << temp2 << std::endl;
         temp = temp | temp2;
+        // std::cout << k << ": " << temp << " " << temp2 << std::endl;
       }
       message_out[(i*num_chars) + j] = temp;
+      and_op = and_op << 1;
     }
   }
 
