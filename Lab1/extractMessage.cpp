@@ -31,10 +31,7 @@ char *extractMessage(const char *message_in, int length) {
       for (int k = 0; k < num_chars; k++) {
         unsigned char temp2;
         temp2 = (((message_in[i*num_chars + k]&and_op) >> j) << k);
-        // std::cout << message_in[k] << std::endl;
-        // std::cout << k << ": " << temp << " " << temp2 << std::endl;
         temp = temp | temp2;
-        // std::cout << k << ": " << temp << " " << temp2 << std::endl;
       }
       message_out[(i*num_chars) + j] = temp;
       and_op = and_op << 1;
