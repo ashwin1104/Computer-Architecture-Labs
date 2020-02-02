@@ -4,7 +4,7 @@ module mux2(out, A, B, control);
     input  A, B;
     input  control;
     wire   wA, wB, not_control;
-         
+
     not n1(not_control, control);
     and a1(wA, A, not_control);
     and a2(wB, B, control);
@@ -17,5 +17,15 @@ module mux4(out, A, B, C, D, control);
     output      out;
     input       A, B, C, D;
     input [1:0] control;
+    wire        wA, wB, wC, wD, not_control_one, not_control_zero;
+
+    not n1(not_control_zero, control[0]);
+    not n2(not_control_one, control[1]);
+    and a1(wA, A, not_control_one, not_control_zero);
+    and a2(wB, B, not_control_one, control_zero);
+    and a3(wC, C, control_one, not_control_zero);
+    and a4(wD, D, control_one, control_zero);
+
+    or o1(out, wA, wB, wC, wD);
 
 endmodule // mux4
