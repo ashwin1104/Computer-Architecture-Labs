@@ -23,7 +23,7 @@ module alu1(out, carryout, A, B, carryin, control);
     output      out, carryout;
     input       A,  B, carryin;
     input [2:0] control;
-    wire        y, s, lout
+    wire        y, s, lout;
 
     xor x0(y, B, control[0]);
     full_adder f1(s, carryout, A, y, carryin);
