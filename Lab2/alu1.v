@@ -21,9 +21,13 @@ endmodule // full_adder
 // 0xx -> arithmetic, 1xx -> logic
 module alu1(out, carryout, A, B, carryin, control);
     output      out, carryout;
-    input       A, B, carryin;
+    input       A,  B, carryin;
     input [2:0] control;
+    wire        y, s, lout
 
-    // add code here!!!
+    xor x0(y, B, control[0]);
+    full_adder f1(s, carryout, A, y, carryin);
+    logicunit l1(lout, A, B, control[1:0])
+    mux2 m1(out, s, lout, control[2]);
 
 endmodule // alu1
