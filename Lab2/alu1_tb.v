@@ -29,7 +29,7 @@ module alu1_test;
     alu1 a1(out, carryout, A, B, carryin, control);
 
     initial begin
-      $display("A B cin c o cout");
+      $display("A B C s o c");
       $monitor("%d %d %d %d %d %d (at time %t)", A, B, carryin, control, out, carryout, $time);
     end
 endmodule // alu1_test
