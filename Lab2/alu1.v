@@ -27,7 +27,7 @@ module alu1(out, carryout, A, B, carryin, control);
 
     xor x0(y, B, control[0]);
     full_adder f1(s, carryout, A, y, carryin);
-    logicunit l1(lout, A, B, control[1:0])
+    logicunit l1(lout, A, B, control[1:0]);
     mux2 m1(out, s, lout, control[2]);
 
 endmodule // alu1
