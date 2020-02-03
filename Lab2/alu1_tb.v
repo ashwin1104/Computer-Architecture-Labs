@@ -6,7 +6,7 @@ module alu1_test;
     reg B = 0;
     always #2 B = !B;
     reg carryin = 0;
-    always #3 carryin = !carryin;
+    always #4 carryin = !carryin;
 
     reg [2:0] control = 0;
 
@@ -15,14 +15,14 @@ module alu1_test;
       $dumpvars(0, alu1_test);
 
       // control is initially 0
-      # 4 control = 1; // wait 4 time units and then set it to 1
-      # 4 control = 2; // wait 4 time units and then set it to 2
-      # 4 control = 3; // wait 4 time units and then set it to 3
-      # 4 control = 4; // wait 4 time units and then set it to 4
-      # 4 control = 5; // wait 4 time units and then set it to 5
-      # 4 control = 6; // wait 4 time units and then set it to 6
-      # 4 control = 7; // wait 4 time units and then set it to 7
-      # 4 $finish; // wait 4 time units and then end the simulation
+      # 8 control = 1; // wait 4 time units and then set it to 1
+      # 8 control = 2; // wait 4 time units and then set it to 2
+      # 8 control = 3; // wait 4 time units and then set it to 3
+      # 8 control = 4; // wait 4 time units and then set it to 4
+      # 8 control = 5; // wait 4 time units and then set it to 5
+      # 8 control = 6; // wait 4 time units and then set it to 6
+      # 8 control = 7; // wait 4 time units and then set it to 7
+      # 8 $finish; // wait 4 time units and then end the simulation
     end
 
     wire out, carryout;
