@@ -1,0 +1,41 @@
+Grades for version committed on time
+	keypad: 25.0 / 25
+			*Passed test: abcdefg = 48
+			*Passed test: abcdefg = 28
+			*Passed test: abcdefg = 18
+			*Passed test: abcdefg = 44
+			*Passed test: abcdefg = 24
+			*Passed test: abcdefg = 14
+			*Passed test: abcdefg = 42
+			*Passed test: abcdefg = 22
+			*Passed test: abcdefg = 12
+			*Passed test: abcdefg = 21
+			*Passed test: abcdefg = 00
+		
+	extract_message: 25.0 / 25
+			*Passed test: simple
+				*Encoded message: [117, 17, 94, 34, 73, 127, 127, 0] (u^"I).
+				*Expected decode: [115, 108, 101, 116, 103, 105, 117, 0] (sletgiu)
+				*Actual decode: [115, 108, 101, 116, 103, 105, 117, 0] (sletgiu)
+			*Passed test: 3 words
+				*Encoded message: [214, 148, 51, 80, 172, 255, 255, 0, 229, 216, 161, 133, 24, 255, 253, 0, 74, 21, 35, 96, 69, 255, 127, 0, 18, 36, 228, 172, 1, 255, 255, 0, 1, 2, 1, 0, 2, 3, 3, 0] (Ö3P¬ÿÿåØ¡ÿýJ#`Eÿ$ä¬ÿÿ).
+				*Expected decode: [100, 101, 115, 112, 111, 116, 105, 115, 109, 32, 105, 114, 114, 101, 99, 111, 118, 101, 114, 97, 98, 108, 121, 32, 112, 97, 110, 104, 97, 110, 100, 108, 101, 114, 0] (despotism irrecoverably panhandler)
+				*Actual decode: [100, 101, 115, 112, 111, 116, 105, 115, 109, 32, 105, 114, 114, 101, 99, 111, 118, 101, 114, 97, 98, 108, 121, 32, 112, 97, 110, 104, 97, 110, 100, 108, 101, 114, 0, 0, 0, 0, 0, 0] (despotism irrecoverably panhandler)
+			*Passed test: 5 words
+				*Encoded message: [230, 234, 65, 64, 11, 255, 239, 0, 139, 193, 140, 129, 96, 255, 239, 0, 172, 98, 56, 164, 83, 255, 255, 0, 89, 56, 18, 114, 96, 255, 123, 0, 18, 36, 29, 6, 33, 63, 63, 0] (æêA@ÿïÁ`ÿï¬b8¤SÿÿY8r`ÿ{$!??).
+				*Expected decode: [116, 115, 97, 114, 32, 99, 111, 99, 107, 97, 100, 101, 32, 112, 114, 111, 112, 114, 105, 101, 116, 111, 114, 105, 97, 108, 32, 99, 111, 122, 121, 32, 116, 105, 110, 100, 101, 114, 0] (tsar cockade proprietorial cozy tinder)
+				*Actual decode: [116, 115, 97, 114, 32, 99, 111, 99, 107, 97, 100, 101, 32, 112, 114, 111, 112, 114, 105, 101, 116, 111, 114, 105, 97, 108, 32, 99, 111, 122, 121, 32, 116, 105, 110, 100, 101, 114, 0, 0] (tsar cockade proprietorial cozy tinder)
+			*Passed test: Thousands of words
+				*Output hidden (you don't want to know...)
+		
+	count_ones: 30.0 / 30
+			*Passed test: 2
+			*Passed test: 55
+			*Passed test: 42
+			*Passed test: 0xffffffff
+			*Passed test: 0x12345678
+			*Passed test: 0x55555555
+		
+Total: 80.0 / 80
+
+Final Score: 80.0 / 80
