@@ -1,0 +1,20 @@
+Regrade report for ashwins2 on Lab 1.1
+----------------------------------------
+
+Regrade timestamp: 1/30/2020 20:16:11
+Lab: Lab 1.1
+Problem description: This is regarding the Farmer problem on this lab (part 1) - it's just one truth table. After seeing that I got a low grade, I checked my truth table with my friend, and it was exactly the same.
+
+The one thing I noticed was that there used to be an unnecessary comment at the top of the file - at least, I thought it was unnecessary. So, I deleted the comment for my file and just submitted the truth table. I believe the issue is that the autograder reads line by line and assumed that the first line was the comment line. However, since mine was deleted, the autograder began its read from the second row of my truth table, ultimately failing me for many tests.
+
+I triple checked the grading to see if my theory is correct, and it matches up. I've included a picture later in this form of a chart. It shows my truth table vs what the autograder probably read, and it shows how the autograder would've graded my truth table if my theory is correct. I also included how my truth table was actually graded - the two grades match up.
+
+Thank you for whoever helps sort this out. Sorry for making this so in depth! I just don't want to start off with a low grade for deleting a comment.
+Staff talked to: No
+Commit hash: 
+
+----------------------------------------
+
+Staff grader: Christiaan
+New score: 20
+Notes: No problem.  Changed your score to 20/20.  Please make sure to leave the same comments in as the original file in the future... sadly the autograder isn't all that smart! :)
