@@ -35,7 +35,7 @@ module alu32_test;
         # 10 A = 32'h7ffffff0; B = 32'h81101000; control = `ALU_SUB; // try subtracting very large negative number from large positive number
 
         # 10 A = 0; B = 0; control = `ALU_UADD; // try adding 0 to 0
-        # 10 A = 10; B = 1; control = `ALU_UADD; // try adding 10 to 10
+        # 10 A = 10; B = 1; control = `ALU_UADD; // try adding 10 to 1
         # 10 A = 32'h7ffffff0; B = 32'h7fffff00; control = `ALU_UADD; // try adding large and large
 
         # 10 A = 0; B = 0; control = `ALU_AND;
