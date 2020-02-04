@@ -8,7 +8,7 @@ module alu32(out, overflow, zero, negative, A, B, control);
     wire          cxor;
     wire          out_one;
 
-    alu1 a0(out[0],c[0], A[1], B[1], control[0], control);
+    alu1 a0(out[0],c[0], A[0], B[0], control[0], control);
     alu1 a1(out[1],c[1], A[1], B[1], c[0], control);
     alu1 a2(out[2], c[2], A[2], B[2], c[1], control);
     alu1 a3(out[3], c[3], A[3], B[3], c[2], control);
@@ -46,7 +46,10 @@ module alu32(out, overflow, zero, negative, A, B, control);
 
     and a1(negative, out[31], 1);
 
-    not n0(out_one, out);
+    nor n0(out_one, out[0], out[1], out[2], out[3], out[4], out[5], out[6], out[7],
+           out[8], out[9], out[10], out[11], out[12], out[13], out[14], out[15],
+           out[16], out[17], out[18], out[19], out[20], out[21], out[22], out[23],
+           out[24], out[25], out[26], out[27], out[28], out[29], out[30], out[31]);
     and a2(zero, out_one, 1);
 
 endmodule // alu32
