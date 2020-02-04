@@ -42,25 +42,25 @@ module alu32_test;
         # 10 A = 1; B = 0; control = `ALU_AND;
         # 10 A = 0; B = 1; control = `ALU_AND;
         # 10 A = 1; B = 1; control = `ALU_AND;
-        # 10 A = 32'h7ffffff0; B = 32'h000100111; control = `ALU_AND;
+        # 10 A = 32'h7fffff0; B = 32'h00010011; control = `ALU_AND;
 
         # 10 A = 0; B = 0; control = `ALU_OR;
         # 10 A = 1; B = 0; control = `ALU_OR;
         # 10 A = 0; B = 1; control = `ALU_OR;
         # 10 A = 1; B = 1; control = `ALU_OR;
-        # 10 A = 32'h7ffffff0; B = 32'h000100111; control = `ALU_OR;
+        # 10 A = 32'h7fffff0; B = 32'h00010011; control = `ALU_OR;
 
         # 10 A = 0; B = 0; control = `ALU_NOR;
         # 10 A = 1; B = 0; control = `ALU_NOR;
         # 10 A = 0; B = 1; control = `ALU_NOR;
         # 10 A = 1; B = 1; control = `ALU_NOR;
-        # 10 A = 32'h7ffffff0; B = 32'h000100111; control = `ALU_NOR;
+        # 10 A = 32'h7fffff0; B = 32'h00010011; control = `ALU_NOR;
 
         # 10 A = 0; B = 0; control = `ALU_XOR;
         # 10 A = 1; B = 0; control = `ALU_XOR;
         # 10 A = 0; B = 1; control = `ALU_XOR;
         # 10 A = 1; B = 1; control = `ALU_XOR;
-        # 10 A = 32'h7ffffff0; B = 32'h000100111; control = `ALU_XOR;
+        # 10 A = 32'h7fffff0; B = 32'h00010011; control = `ALU_XOR;
 
         # 10 $finish;
     end
