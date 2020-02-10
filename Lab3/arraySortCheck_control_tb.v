@@ -18,11 +18,10 @@ module arraySortCheck_control_test;
         $dumpvars(0, arraySortCheck_control_test);
         #2      reset = 0;
 
-	// First, lets give an initial value for all
-	// registers equal to their 'index' in the register file
+  // First, lets give an initial value for all
+  // registers equal to their 'index' in the register file
 	for ( i = 0; i < 32; i = i + 1)
-		circuit.rf.r[i] <= i;
-
+    circuit.rf.r[i] <= i;
 
   // Test a sorted array of length 5
   # 2 array = 11; length = 5; go = 1;
@@ -49,7 +48,40 @@ module arraySortCheck_control_test;
 	# 2 array = 7; length = 3; go = 1;
 	# 10 go = 0;
   # 20
+
         // Add your own testcases here!
+          # 2 array = 12; length = 3; go = 1; reset = 1;
+          # 4 go = 0;
+          # 6 reset = 0;
+          # 20
+
+          # 2 array = 31; length = 0; go = 1; //should be 0 length and report sorted
+          # 10 go = 0;
+          # 20;
+
+          # 2 reset = 1;
+          # 2 reset = 0;
+
+          # 2 length = 0; go = 1;
+          # 10 go = 0;
+          # 20
+
+          # 2 reset = 1;
+          # 2 reset = 0;
+
+          circuit.rf.r[2] <= 32'd2;
+          # 2 length = 1; go = 1;
+          # 10 go = 0;
+          # 20
+
+          # 2 reset = 1;
+          # 2 reset = 0;
+
+          circuit.rf.r[2] <= 32'd1;
+          circuit.rf.r[1] <= 32'd2;
+          # 2 length = 2; go = 1;
+          # 10 go = 0;
+          # 20
 
         #10 $finish;
     end
