@@ -67,7 +67,7 @@ module mips_decode(alu_op, writeenable, rd_src, alu_src2, except, control_type,
     assign byte_we = op_sb;
     assign byte_load = op_lbu;
 
-    assign control_type[0] = (op_beq & ~zero)| (op_bne & zero) | op_jr;
+    assign control_type[0] = (op_beq & zero)| (op_bne & ~zero) | op_jr;
     assign control_type[1] = op_j | op_jr;
 
     assign writeenable = op_addu | op_addiu | op_add | op_addi | op_and | op_andi | op_or | op_ori | op_xor | op_xori | op_nor | op_sub | op_lui | op_slt | op_lw | op_lbu | op_addm;
