@@ -71,7 +71,7 @@ module mips_decode(alu_op, writeenable, rd_src, alu_src2, except, control_type,
     assign control_type[1] = op_j | op_jr;
 
     assign writeenable = op_addu | op_addiu | op_add | op_addi | op_and | op_andi | op_or | op_ori | op_xor | op_xori | op_nor | op_sub | op_lui | op_slt | op_lw | op_lbu | op_addm;
-    assign except = ~(writeenable | op_bne | op_beq | op_j | op_jr | op_lui | op_slt | op_lw | op_lbu | op_sw | op_sb | op_addm);
+    assign except = ~(writeenable | op_bne | op_beq | op_j | op_jr | op_sw | op_sb);
 
     assign alu_op[0] = op_sub | op_or | op_ori | op_xor | op_xori | op_bne | op_beq | op_slt;
     assign alu_op[1] = op_add | op_addi | op_sub | op_nor | op_xor | op_xori | op_bne | op_beq | op_slt | op_lw | op_lbu | op_sw | op_sb;
