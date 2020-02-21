@@ -51,7 +51,7 @@ module mips_decode(alu_op, writeenable, rd_src, alu_src2, except, control_type,
     wire op_beq =  (opcode == `OP_BEQ);
     wire op_j =  (opcode == `OP_J);
     wire op_jr =  (opcode == `OP_OTHER0) && (funct == `OP0_JR);
-    wire op_lui =  (opcode == `OP_LUI);writeenable
+    wire op_lui =  (opcode == `OP_LUI);
     wire op_slt =  (opcode == `OP_OTHER0) && (funct == `OP0_SLT);
     wire op_lw =  (opcode == `OP_LW);
     wire op_lbu =  (opcode == `OP_LBU);
