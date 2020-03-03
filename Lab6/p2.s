@@ -120,7 +120,7 @@ markov_chain:
 	move $s3, $a3						# store width in s3
 
 markov_for:
-	bge $s4, $s3, end					# if i < width continue
+	bge $s4, $s3, markov_end	# if i < width continue
 	move $a0, $s0							# store state
 	move $a1, $s1							# store transition
 	la $a2, working_matrix		# load address of output matrix
@@ -136,7 +136,7 @@ markov_for_incr:
 	add $s4, $s4, 1		# i++
 	j markov_for
 
-end:
+markov_end:
 	lw $ra, 0($sp)              # reset stack
 	lw $s0, 4($sp)
 	lw $s1, 8($sp)
