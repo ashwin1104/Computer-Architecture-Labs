@@ -106,5 +106,41 @@ end:
 
 .globl markov_chain
 markov_chain:
-	# Can access working_matrix from p2_main.s
+	sub $sp $sp 20					# allocate stack size 20
+	sw $ra, 0($sp)					# store givens and ra in stack pointer
+	sw $s0, 4($sp)
+	move $s0, $a0
+	sw $s1, 8($sp)
+	move $s1, $a1
+	sw $s2, 12($sp)
+	move $s2, $a2
+	sw $s4, 16($sp)					# store i in stack pointer
+	li $s4, 0								# initialize i to 0
+
+	move $s3, $a3						# store width in s3
+
+markov_for:
+	bge $s4, $s3, end					# if i < width continue
+	move $a0, $s0							# store state
+	move $a1, $s1							# store transition
+	la $a2, working_matrix		# load address of output matrix
+	move $a3, $s2							# store width
+	jal matrix_mult
+
+	move $a0, $s0							# store state
+	la $a1, working_matrix		# load address of output matrix
+	move $a2, $s2							# store width
+	jal copy
+
+markov_for_incr:
+	add $s4, $s4, 1		# i++
+	j markov_for
+
+end:
+	lw $ra, 0($sp)              # reset stack
+	lw $s0, 4($sp)
+	lw $s1, 8($sp)
+	lw $s2, 12($sp)
+	lw $s4, 16($sp)
+	add $sp, $sp, 20            # reset pointer
 	jr	$ra
