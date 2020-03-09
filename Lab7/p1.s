@@ -17,10 +17,9 @@
 .globl find_payment
 find_payment:
 	beq $a0, $zero, null_check			# if trav is null go to null_check
-	jal setup_payment
 
 setup_payment:
-	sub $sp, $sp, 32								# allocate memory necessary with stack pointer
+	sub $sp, $sp, 36								# allocate memory necessary with stack pointer
 																	# store all necessary save registers
 	sw $ra, 0($sp)
 	sw $s0, 4($sp)
@@ -30,8 +29,6 @@ setup_payment:
 	sw $s3, 16($sp)
 	sw $s4, 20($sp)
 	sw $s5, 24($sp)
-
-	jal start_payment
 
 start_payment:
 	li $s5, 0												# set future v0 to 0
@@ -56,7 +53,6 @@ start_payment:
 
 	div $s5, $s5, 2									# divide s5 by 2
 	move $v0, $s5										# store s5 (ans) into v0 (return register)
-	jal finish_payment
 
 finish_payment:
 	lw $ra, 0($sp)									# reallocate memory by loading back every register
@@ -66,7 +62,7 @@ finish_payment:
 	lw $s3, 16($sp)
 	lw $s4, 20($sp)
 	lw $s5, 24($sp)
-	addi $sp, $sp, 32
+	addi $sp, $sp, 36
 	jr $ra
 
 null_check:
