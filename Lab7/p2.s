@@ -176,14 +176,7 @@ solve_return:
 	add $t2, $t2, $s7
 	add $t2, $t2, $t1
 	lbu $t2, 0($t2)
-	beq $t2, $0, solve_for_loop
- 	move $a0, $s0
- 	move $a1, $s5
- 	lw $a2, 36($sp)
- 	add $a3, $s7, 1
- 	rem $a3, $a3, $s2
- 	jal solve
- 	j solved
+	beq $t2, $0, solve_for_loop 	
 
 s_second_if_true:
 	move $a0, $s0
