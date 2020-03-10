@@ -181,7 +181,7 @@ solve_return:
 	lbu $t3, 0($t3)									# clue[row*num_cols + col]
 	beq $t3, $0, solve_for_loop			# if puzzle->clue[row*num_cols+col] is 0/NULL -> ...
 
-prep_recurse:
+recurse:
 	move $a0, $s0										# store puzzle, solution, next_row as arguments
 	move $a1, $s5
 	lw   $a2, 36($sp)
@@ -189,7 +189,6 @@ prep_recurse:
 	add $a3, $s7, 1									# col+1
 	rem $a3, $a3, $s2								# (col+1) % num_cols (final argument)
 
-recurse:
 	jal solve												# recursion
 	j solved
 
@@ -207,7 +206,12 @@ solve_for_loop:
 	jal toggle_light
 
 true_check:
-	jal prep_recurse
+	move $a0, $s0										# store puzzle, solution, next_row as arguments
+	move $a1, $s5
+	lw $a2, 36($sp)
+
+	add $a3, $s7, 1									# col+1
+	rem $a3, $a3, $s2								# (col+1) % num_cols (final argument)
 	jal solve
 	bne $v0, $0, true_solve
 	j finish_for_loop
