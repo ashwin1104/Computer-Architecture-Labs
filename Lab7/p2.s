@@ -136,6 +136,7 @@ solve:
 	sw		$s6, 28($sp)
 	sw		$s7, 32($sp)
 
+initialize:
 	add $s0, $a0, 0
 	lw $s1, 0($s0)
 	add $s2, $a0, 4
@@ -149,38 +150,31 @@ solve:
 	move $s7, $a3
 	move $t0, $s6
 	sub $t1, $s2, 1
-	bne $s7, $t1, s_first_if
+	bne $s7, $t1, col_equal
 
-s_equal:
+col_equal:
 	add $t0, $t0, 1
 
-s_first_if:
+row_col_greater:
 	sw $t0, 36($sp)
-	bge $s6, $s1, s_return_if
-	bge $s7, $s2, s_return_if
-	j s_second_if
+	bge $s6, $s1, board_return
+	bge $s7, $s2, board_return
+	j solve_return
 
-s_return_if:
+board_return:
 	move $a0, $s1
 	move $a1, $s2
 	add $a2, $s0, 12
 	jal solver_board_done
-	j s_end
+	j solved
 
-s_second_if:
+solve_return:
 	add $t1, $s0, 268
 	mul $t2, $s6, $s2
 	add $t2, $t2, $s7
 	add $t2, $t2, $t1
 	lbu $t2, 0($t2)
-	beq $t2, $0, s_for
-	move $a0, $s0
-	move $a1, $s5
-	lw $a2, 36($sp)
-	add $a3, $s7, 1
-	rem $a3, $a3, $s2
-	jal solve
-	j s_end
+	beq $t2, $0, solve_for_loop
 
 s_second_if_true:
 	move $a0, $s0
@@ -191,8 +185,8 @@ s_second_if_true:
 	jal solve
 	j s_end
 
-s_for:
-	bge $s4, $s3, s_afterloop
+solve_for_loop:
+	bge $s4, $s3, false_solve
 	mul $t0, $s6, $s2
 	add $t0, $t0, $s7
 	add $t0, $t0, $s5
@@ -203,21 +197,21 @@ s_for:
 	move $a3, $s4
 	jal toggle_light
 
-s_for_if:
+true_check:
 	move $a0, $s0
 	move $a1, $s5
 	lw $a2, 36($sp)
 	add $a3, $s7, 1
 	rem $a3, $a3, $s2
 	jal solve
-	bne $v0, $0, s_for_true
-	j s_for_cont
+	bne $v0, $0, true_solve
+	j finish_for_loop
 
-s_for_true:
+true_solve:
 	li $v0, 1
-	j s_end
+	j solved
 
-s_for_cont:
+finish_for_loop:
 	move $a0, $s6
 	move $a1, $s7
 	move $a2, $s0
@@ -229,15 +223,15 @@ s_for_cont:
 	add $t0, $t0, $s5
 	sb $0, 0($t0)
 
-s_for_inc:
+for_incr_solve:
 	add $s4, $s4, 1
-	j s_for
+	j solve_for_loop
 
-s_afterloop:
+false_solve:
 	li $v0, 0
-	j s_end
+	j solved
 
-s_end:
+solved:
 	lw		$ra, 0($sp)
 	lw		$s0, 4($sp)
 	lw		$s1, 8($sp)
