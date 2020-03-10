@@ -125,7 +125,7 @@ toggle_light:
 
 .globl solve
 solve:
-	sub		$sp, $sp, 36			# allocate space for save registers
+	sub		$sp, $sp, 36			# callee save
 	sw		$ra, 0($sp)
 	sw		$s0, 4($sp)
 	sw		$s1, 8($sp)
@@ -135,34 +135,29 @@ solve:
 	sw		$s5, 24($sp)
 	sw		$s6, 28($sp)
 	sw		$s7, 32($sp)
-
 	lw		$s0, 0($a0)			# $s0 = num_rows
 	lw		$s1, 4($a0)			# $s1 = num_cols
 	lw		$s2, 8($a0)			# $s2 = num_colors
-
-	li $s3, 0							# actions = 0
-
-	move $s4, $a1						# solution
-	move $s5, $a2						# row
-	move $s6, $a3						# col
-
-	move $t0, $s5						# t0 = row
-	sub $t1, $s1, 1					# t1 = num_cols-1
-
-	bne		$s6, $t1, full_board
-	add		$t0, $t0, 1			# t0 = row + 1
+	add		$s3, $a0, 12			# $s3 = &board
+	add		$s4, $s3, 256			# $s4 = &clue
+	sub		$t0, $s1, 1			# $t0 = num_cols - 1
+	move		$s5, $a2			# $s5 = next_row = row
+	li		$s6, 0				# $s6 = actions = 0
+	mul		$s7, $a2, $s1			# $s7 = row * num_cols
+	add		$s7, $s7, $a3			# $s7 = row * num_cols + col
+	bne		$t0, $a3, full_board
+	add		$s5, $s5, 1			# $s5 = next_row = row + 1
 
 full_board:
-	sw 		$t0, 36($sp)			# store t0 (incremented row)
-
-	bge $s5, $s0, return_full_board # if rows >= num_rows
+	sge		$t0, $a2, $s0			# $t0 = row >= num_rows
+	sge		$t1, $a3, $s1			# $t1 = col >= num_cols
+	or		$t0, $t0, $t1			# $t0 = $t0 || $t1
+	beq		$t0, 0, clue_board			# if ($t0 || $t1)
+	move		$a0, $s0			# $a0 = num_rows
+	move		$a1, $s1			# $a1 = num_cols
+	move		$a2, $s3			# $a2 = puzzle->board
 	jal		solver_board_done
 	j 		true_case
-
-return_full_board:
-	move $a0, $s0
-	move $a1, $s1
-	add $a2, $s0,
 
 clue_board:
 	add		$t0, $s7, $s4			# $t0 = &clue[row * num_cols + col]
