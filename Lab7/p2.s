@@ -160,32 +160,34 @@ col_not_equal:
 	move $t0 $s6										# next_row = row
 
 row_col_greater:
-	bge $s6, $s1, board_return
-	bge $s7, $s2, board_return
+	bge $s6, $s1, board_return			# if row >= num_rows -> ...
+	bge $s7, $s2, board_return			# if col >= num_cols -> ...
 	j solve_return
 
 board_return:
-	move $a0, $s1
+	move $a0, $s1										# fill in correct data for 3 function arguments
 	move $a1, $s2
-	add $a2, $s0, 12
+	add $a2, $s0, 12								# puzzle->board
 	jal solver_board_done
 	j solved
 
 solve_return:
-	add $t1, $s0, 268
-	mul $t2, $s6, $s2
-	add $t2, $t2, $s7
-	add $t2, $t2, $t1
-	lbu $t2, 0($t2)
-	beq $t2, $0, solve_for_loop
+	add $t1, $s0, 268								# 12+256 = 268, so t1 = puzzle->clue[0]
+	mul $t2, $s6, $s2								# row*num_cols
+	add $t2, $t2, $s7								# row*num_cols + col
+	add $t2, $t2, $t1								# &clue[row*num_cols + col]
+	lbu $t2, 0($t2)									# clue[row*num_cols + col]
+	beq $t2, $0, solve_for_loop			# if puzzle->clue[row*num_cols+col] is 0/NULL -> ...
 
-s_second_if_true:
-	move $a0, $s0
+recurse:
+	move $a0, $s0										# store puzzle, solution, next_row as arguments
 	move $a1, $s5
-	lw $a2, 36($sp)
-	add $a3, $s7, 1
-	rem $a3, $a3, $s2
-	jal solve
+	move $a2, $t0
+
+	add $a3, $s7, 1									# col+1
+	rem $a3, $a3, $s2								# (col+1) % num_cols (final argument)
+
+	jal solve												# recursion
 	j solved
 
 solve_for_loop:
