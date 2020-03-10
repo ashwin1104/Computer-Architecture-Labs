@@ -125,7 +125,7 @@ toggle_light:
 
 .globl solve
 solve:
-	sub		$sp, $sp, 36							# allocating enough memory
+	sub		$sp, $sp, 40							# allocating enough memory
 	sw		$ra, 0($sp)								# store return register
 	sw		$s0, 4($sp)
 	sw		$s1, 8($sp)
@@ -250,5 +250,5 @@ solved:
 	lw		$s5, 24($sp)
 	lw		$s6, 28($sp)
 	lw		$s7, 32($sp)
-	add		$sp, $sp, 36
+	add		$sp, $sp, 40
 	jr $ra
