@@ -181,7 +181,7 @@ solve_return:
  	add $a3, $s7, 1
  	rem $a3, $a3, $s2
  	jal solve
- 	j s_end
+ 	j solved
 
 s_second_if_true:
 	move $a0, $s0
