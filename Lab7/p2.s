@@ -134,7 +134,7 @@ solve:
 	sw		$s5, 24($sp)
 	sw		$s6, 28($sp)
 	sw		$s7, 32($sp)
-
+	sw 		$t0, 36($sp)
 
 initialize:
 	add $s0, $a0, 0									# s0 = &puzzle
@@ -159,7 +159,7 @@ col_not_equal:
 	move $t0 $s6										# next_row = row
 
 row_col_greater:
-	sw $t0 36($sp)
+
 	bge $s6, $s1, board_return			# if row >= num_rows -> ...
 	bge $s7, $s2, board_return			# if col >= num_cols -> ...
 	j solve_return
@@ -246,5 +246,6 @@ solved:
 	lw		$s5, 24($sp)
 	lw		$s6, 28($sp)
 	lw		$s7, 32($sp)
+	lw 		$t0, 36($sp)
 	add		$sp, $sp, 40
 	jr $ra
