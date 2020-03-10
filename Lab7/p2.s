@@ -182,7 +182,7 @@ solve_return:
 recurse:
 	move $a0, $s0										# store puzzle, solution, next_row as arguments
 	move $a1, $s5
-	lw   $a2, 0($t0)
+	lw   $a2, 36($sp)
 
 	add $a3, $s7, 1									# col+1
 	rem $a3, $a3, $s2								# (col+1) % num_cols (final argument)
