@@ -181,15 +181,13 @@ solve_return:
 	lbu $t3, 0($t3)									# clue[row*num_cols + col]
 	beq $t3, $0, solve_for_loop			# if puzzle->clue[row*num_cols+col] is 0/NULL -> ...
 
-recurse:
+prep_recurse:
 	move $a0, $s0										# store puzzle, solution, next_row as arguments
 	move $a1, $s5
 	lw   $a2, 36($sp)
-
 	add $a3, $s7, 1									# col+1
 	rem $a3, $a3, $s2								# (col+1) % num_cols (final argument)
-
-	jal solve												# recursion
+	jal solve
 	j solved
 
 solve_for_loop:
@@ -205,35 +203,37 @@ solve_for_loop:
 	move $a3, $s4
 	jal toggle_light
 
-true_check:
+prep_recurse_2:
 	move $a0, $s0										# store puzzle, solution, next_row as arguments
 	move $a1, $s5
-	lw $a2, 36($sp)
+	lw   $a2, 36($sp)
 
 	add $a3, $s7, 1									# col+1
 	rem $a3, $a3, $s2								# (col+1) % num_cols (final argument)
 	jal solve
-	bne $v0, $0, true_solve
+
+true_check:
+	bne $v0, $0, true_solve					# if return value is not 0 -> ...
 	j finish_for_loop
 
 true_solve:
-	li $v0, 1
+	li $v0, 1												# return value = 1
 	j solved
 
 finish_for_loop:
-	move $a0, $s6
+	move $a0, $s6										# arguments row, col, puzzle
 	move $a1, $s7
 	move $a2, $s0
-	move $a3, $s3
-	sub $a3, $a3, $s4
+	move $a3, $s3										# num_colors
+	sub $a3, $a3, $s4								# num_colors - actions
 	jal toggle_light
-	mul $t0, $s6, $s2
-	add $t0, $t0, $s7
-	add $t0, $t0, $s5
-	sb $0, 0($t0)
+
+	lw $t2, 40($sp)
+	add $t2, $t2, $s5								# t2 = &solution[num_cols*row + col]
+	sb $0, 0($t2)									# solution[num_cols*row+col] = 0
 
 for_incr_solve:
-	add $s4, $s4, 1
+	add $s4, $s4, 1								# increment actions
 	j solve_for_loop
 
 false_solve:
