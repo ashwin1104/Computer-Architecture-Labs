@@ -134,7 +134,6 @@ solve:
 	sw		$s5, 24($sp)
 	sw		$s6, 28($sp)
 	sw		$s7, 32($sp)
-	sw		$t0, 36($sp)							# store 9 save registers
 
 
 initialize:
@@ -148,6 +147,7 @@ initialize:
 	move $s6, $a2										# s6 = row
 	move $s7, $a3										# s7 = col
 
+	move $t0 $s6
 	sub $t1, $s2, 1									# t1 = num_cols - 1
 	bne $s7, $t1, col_not_equal		# if col != num_cols-1 -> ...
 
@@ -159,6 +159,7 @@ col_not_equal:
 	move $t0 $s6										# next_row = row
 
 row_col_greater:
+	sw $t0 36($sp)
 	bge $s6, $s1, board_return			# if row >= num_rows -> ...
 	bge $s7, $s2, board_return			# if col >= num_cols -> ...
 	j solve_return
