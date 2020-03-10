@@ -183,7 +183,7 @@ s_second_if_true:
 	add $a3, $s7, 1
 	rem $a3, $a3, $s2
 	jal solve
-	j s_end
+	j solved
 
 solve_for_loop:
 	bge $s4, $s3, false_solve
