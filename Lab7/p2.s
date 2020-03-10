@@ -167,7 +167,7 @@ clue_board:
 	add		$a3, $a3, 1
 	rem		$a3, $a3, $s1			# $a3 = (col + 1) % num_cols
 	jal		solve
-	j		solve_end
+	j		true_case
 
 solve_for_loop:
 	bge		$s6, $s2, false_case
