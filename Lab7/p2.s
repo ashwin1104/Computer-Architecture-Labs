@@ -139,8 +139,8 @@ solve:
 initialize:
 	add $s0, $a0, 0									# s0 = &puzzle
 	lw $s1, 0($a0)									# s1 = num_rows
-	lw $s2, 4($a2)									# s2 = num_cols
-	lw $s3, 8($a2)									# s3 = num_colors
+	lw $s2, 4($a0)									# s2 = num_cols
+	lw $s3, 8($a0)									# s3 = num_colors
 
 	move $s4, $0										# actions = 0
 	move $s5, $a1										# s5 = solution
