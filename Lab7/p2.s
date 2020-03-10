@@ -125,7 +125,7 @@ toggle_light:
 
 .globl solve
 solve:
-	sub		$sp, $sp, 36			# callee save
+	sub		$sp, $sp, 40
 	sw		$ra, 0($sp)
 	sw		$s0, 4($sp)
 	sw		$s1, 8($sp)
@@ -135,94 +135,109 @@ solve:
 	sw		$s5, 24($sp)
 	sw		$s6, 28($sp)
 	sw		$s7, 32($sp)
-	lw		$s0, 0($a0)			# $s0 = num_rows
-	lw		$s1, 4($a0)			# $s1 = num_cols
-	lw		$s2, 8($a0)			# $s2 = num_colors
-	add		$s3, $a0, 12			# $s3 = &board
-	add		$s4, $s3, 256			# $s4 = &clue
-	sub		$t0, $s1, 1			# $t0 = num_cols - 1
-	move		$s5, $a2			# $s5 = next_row = row
-	li		$s6, 0				# $s6 = actions = 0
-	mul		$s7, $a2, $s1			# $s7 = row * num_cols
-	add		$s7, $s7, $a3			# $s7 = row * num_cols + col
-	bne		$t0, $a3, full_board
-	add		$s5, $s5, 1			# $s5 = next_row = row + 1
 
-full_board:
-	sge		$t0, $a2, $s0			# $t0 = row >= num_rows
-	sge		$t1, $a3, $s1			# $t1 = col >= num_cols
-	or		$t0, $t0, $t1			# $t0 = $t0 || $t1
-	beq		$t0, 0, clue_board			# if ($t0 || $t1)
-	move		$a0, $s0			# $a0 = num_rows
-	move		$a1, $s1			# $a1 = num_cols
-	move		$a2, $s3			# $a2 = puzzle->board
-	jal		solver_board_done
-	j 		true_case
+	add $s0, $a0, 0
+	lw $s1, 0($s0)
+	add $s2, $a0, 4
+	lw $s2, 0($s2)
+	add $s3, $a0, 8
+	lw $s3, 0($s3)
 
-clue_board:
-	add		$t0, $s7, $s4			# $t0 = &clue[row * num_cols + col]
-	lbu		$t0, 0($t0)
-	beq		$t0, 0, solve_for_loop
-	move		$a2, $s5			# $a2 = next_row
-	add		$a3, $a3, 1
-	rem		$a3, $a3, $s1			# $a3 = (col + 1) % num_cols
-	jal		solve
-	j		true_case
+	move $s4, $0
+	move $s5, $a1
+	move $s6, $a2
+	move $s7, $a3
+	move $t0, $s6
+	sub $t1, $s2, 1
+	bne $s7, $t1, s_first_if
 
-solve_for_loop:
-	bge		$s6, $s2, false_case
-	add		$t0, $a1, $s7			# $t0 = &solution[row*num_cols + col]
-	sb		$s6, 0($t0)			# solution[row*num_cols + col] = actions
-	sub		$sp, $sp, 16			# caller save
-	sw		$a0, 0($sp)
-	sw		$a1, 4($sp)
-	sw		$a2, 8($sp)
-	sw		$a3, 12($sp)
-	move		$a1, $a3			# $a1 = col
-	move		$t0, $a0			# $t0 = puzzle
-	move		$a0, $a2			# $a0 = row
-	move		$a2, $t0			# $a2 = puzzle
-	move		$a3, $s6			# $a3 = actions
-	jal		toggle_light
-	lw		$a0, 0($sp)
-	lw		$a1, 4($sp)
-	lw		$a3, 12($sp)
-	move		$a2, $s5
-	add		$a3, $a3, 1
-	rem		$a3, $a3, $s1			# $a3 = (col + 1) % num_cols
-	jal		solve
-	lw		$a0, 0($sp)
-	lw		$a1, 4($sp)
-	lw		$a2, 8($sp)
-	lw		$a3, 12($sp)
-	add		$sp, $sp, 16			# caller restore
-	bge		$v0, 1, true_case		# if (solve(puzzle,solution, next_row, (col + 1) % num_cols))
-	sub		$sp, $sp, 16			# caller save
-	sw		$a0, 0($sp)
-	sw		$a1, 4($sp)
-	sw		$a2, 8($sp)
-	sw		$a3, 12($sp)
-	move		$a1, $a3			# $a1 = col
-	move		$t0, $a0			# $t0 = puzzle
-	move		$a0, $a2			# $a0 = row
-	move		$a2, $t0			# $a2 = puzzle
-	move		$a3, $s2			# $a3 = num_colors
-	sub		$a3, $a3, $s6			# $a3 -= actions
-	jal		toggle_light
-	lw		$a0, 0($sp)
-	lw		$a1, 4($sp)
-	lw		$a2, 8($sp)
-	lw		$a3, 12($sp)
-	add		$sp, $sp, 16			# caller restore
-	add		$t0, $a1, $s7			# $t0 = &solution[row*num_cols + col]
-	sb		$0, 0($t0)			# solution[row*num_cols + col] = 0
-	add		$s6, $s6, 1			# $s6 = actions += 1
-	j		solve_for_loop
+s_equal:
+	add $t0, $t0, 1
 
-false_case:
-	li		$v0, 0
+s_first_if:
+	sw $t0, 36($sp)
+	bge $s6, $s1, s_return_if
+	bge $s7, $s2, s_return_if
+	j s_second_if
 
-true_case:
+s_return_if:
+	move $a0, $s1
+	move $a1, $s2
+	add $a2, $s0, 12
+	jal board_done
+	j s_end
+
+s_second_if:
+	add $t1, $s0, 268
+	mul $t2, $s6, $s2
+	add $t2, $t2, $s7
+	add $t2, $t2, $t1
+	lbu $t2, 0($t2)
+	beq $t2, $0, s_for
+	move $a0, $s0
+	move $a1, $s5
+	lw $a2, 36($sp)
+	add $a3, $s7, 1
+	rem $a3, $a3, $s2
+	jal solve
+	j s_end
+
+s_second_if_true:
+	move $a0, $s0
+	move $a1, $s5
+	lw $a2, 36($sp)
+	add $a3, $s7, 1
+	rem $a3, $a3, $s2
+	jal solve
+	j s_end
+
+s_for:
+	bge $s4, $s3, s_afterloop
+	mul $t0, $s6, $s2
+	add $t0, $t0, $s7
+	add $t0, $t0, $s5
+	sb $s4, 0($t0)
+	move $a0, $s6
+	move $a1, $s7
+	move $a2, $s0
+	move $a3, $s4
+	jal toggle_light
+
+s_for_if:
+	move $a0, $s0
+	move $a1, $s5
+	lw $a2, 36($sp)
+	add $a3, $s7, 1
+	rem $a3, $a3, $s2
+	jal solve
+	bne $v0, $0, s_for_true
+	j s_for_cont
+
+s_for_true:
+	li $v0, 1
+	j s_end
+
+s_for_cont:
+	move $a0, $s6
+	move $a1, $s7
+	move $a2, $s0
+	move $a3, $s3
+	sub $a3, $a3, $s4
+	jal toggle_light
+	mul $t0, $s6, $s2
+	add $t0, $t0, $s7
+	add $t0, $t0, $s5
+	sb $0, 0($t0)
+
+s_for_inc:
+	add $s4, $s4, 1
+	j s_for
+
+s_afterloop:
+	li $v0, 0
+	j s_end
+
+s_end:
 	lw		$ra, 0($sp)
 	lw		$s0, 4($sp)
 	lw		$s1, 8($sp)
@@ -232,5 +247,5 @@ true_case:
 	lw		$s5, 24($sp)
 	lw		$s6, 28($sp)
 	lw		$s7, 32($sp)
-	add		$sp, $sp, 36			# callee restore
-	jr 		$ra
+	add		$sp, $sp, 40
+	jr $ra
