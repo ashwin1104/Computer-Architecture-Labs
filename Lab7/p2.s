@@ -150,7 +150,7 @@ initialize:
 	move $s7, $a3
 	move $t0, $s6
 	sub $t1, $s2, 1
-	bne $s7, $t1, col_equal
+	bne $s7, $t1, row_col_greater
 
 col_equal:
 	add $t0, $t0, 1
