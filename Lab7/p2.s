@@ -164,7 +164,7 @@ s_return_if:
 	move $a0, $s1
 	move $a1, $s2
 	add $a2, $s0, 12
-	jal board_done
+	jal solver_board_done
 	j s_end
 
 s_second_if:
