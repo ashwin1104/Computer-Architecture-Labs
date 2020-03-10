@@ -175,7 +175,6 @@ solve_return:
 	add $t2, $t2, $t1
 	lbu $t2, 0($t2)
 	beq $t2, $0, solve_for_loop
-	beq $t2, $0, s_for
  	move $a0, $s0
  	move $a1, $s5
  	lw $a2, 36($sp)
