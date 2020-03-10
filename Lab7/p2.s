@@ -125,8 +125,8 @@ toggle_light:
 
 .globl solve
 solve:
-	sub		$sp, $sp, 40
-	sw		$ra, 0($sp)
+	sub		$sp, $sp, 36							# allocating enough memory
+	sw		$ra, 0($sp)								# store return register
 	sw		$s0, 4($sp)
 	sw		$s1, 8($sp)
 	sw		$s2, 12($sp)
@@ -134,26 +134,28 @@ solve:
 	sw		$s4, 20($sp)
 	sw		$s5, 24($sp)
 	sw		$s6, 28($sp)
-	sw		$s7, 32($sp)
+	sw		$s7, 32($sp)							# store 8 save registers
 
 initialize:
-	add $s0, $a0, 0
-	lw $s1, 0($s0)
-	add $s2, $a0, 4
-	lw $s2, 0($s2)
-	add $s3, $a0, 8
-	lw $s3, 0($s3)
+	add $s0, $a0, 0									# s0 = &puzzle
+	lw $s1, 0($a0)									# s1 = num_rows
+	lw $s2, 4($a2)									# s2 = num_cols
+	lw $s3, 8($a2)									# s3 = num_colors
 
-	move $s4, $0
-	move $s5, $a1
-	move $s6, $a2
-	move $s7, $a3
-	move $t0, $s6
-	sub $t1, $s2, 1
-	bne $s7, $t1, row_col_greater
+	move $s4, $0										# actions = 0
+	move $s5, $a1										# s5 = solution
+	move $s6, $a2										# s6 = row
+	move $s7, $a3										# s7 = col
+
+	sub $t1, $s2, 1									# t1 = num_cols - 1
+	bne $s7, $t1, col_not_equal		# if col != num_cols-1 -> ...
 
 col_equal:
-	add $t0, $t0, 1
+	add $t0, $s6, 1									# next_row = row + 1
+	j row_col_greater
+
+col_not_equal:
+	move $t0 $s6										# next_row = row
 
 row_col_greater:
 	sw $t0, 36($sp)
@@ -248,5 +250,5 @@ solved:
 	lw		$s5, 24($sp)
 	lw		$s6, 28($sp)
 	lw		$s7, 32($sp)
-	add		$sp, $sp, 40
+	add		$sp, $sp, 36
 	jr $ra
