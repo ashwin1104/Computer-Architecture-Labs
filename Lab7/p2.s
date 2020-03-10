@@ -124,7 +124,7 @@ toggle_light:
 # $a3 col
 .globl solve
 solve:
-	sub		$sp, $sp, 40							# allocating enough memory
+	sub		$sp, $sp, 44							# allocating enough memory
 	sw		$ra, 0($sp)								# store return register
 	sw		$s0, 4($sp)
 	sw		$s1, 8($sp)
@@ -134,7 +134,7 @@ solve:
 	sw		$s5, 24($sp)
 	sw		$s6, 28($sp)
 	sw		$s7, 32($sp)
-	sw 		$t0, 36($sp)
+
 
 initialize:
 	add $s0, $a0, 0									# s0 = &puzzle
@@ -142,7 +142,7 @@ initialize:
 	lw $s2, 4($a0)									# s2 = num_cols
 	lw $s3, 8($a0)									# s3 = num_colors
 
-	move $s4, $0										# actions = 0
+	move $s4, $0										# s4 = actions = 0
 	move $s5, $a1										# s5 = solution
 	move $s6, $a2										# s6 = row
 	move $s7, $a3										# s7 = col
@@ -159,7 +159,7 @@ col_not_equal:
 	move $t0 $s6										# next_row = row
 
 row_col_greater:
-
+	sw $t0 36($sp)
 	bge $s6, $s1, board_return			# if row >= num_rows -> ...
 	bge $s7, $s2, board_return			# if col >= num_cols -> ...
 	j solve_return
@@ -175,9 +175,11 @@ solve_return:
 	add $t1, $s0, 268								# 12+256 = 268, so t1 = puzzle->clue[0]
 	mul $t2, $s6, $s2								# row*num_cols
 	add $t2, $t2, $s7								# row*num_cols + col
-	add $t2, $t2, $t1								# &clue[row*num_cols + col]
-	lbu $t2, 0($t2)									# clue[row*num_cols + col]
-	beq $t2, $0, solve_for_loop			# if puzzle->clue[row*num_cols+col] is 0/NULL -> ...
+	sw $t2, 40($sp)
+
+	add $t3, $t2, $t1								# &clue[row*num_cols + col]
+	lbu $t3, 0($t3)									# clue[row*num_cols + col]
+	beq $t3, $0, solve_for_loop			# if puzzle->clue[row*num_cols+col] is 0/NULL -> ...
 
 recurse:
 	move $a0, $s0										# store puzzle, solution, next_row as arguments
@@ -191,12 +193,13 @@ recurse:
 	j solved
 
 solve_for_loop:
-	bge $s4, $s3, false_solve
-	mul $t0, $s6, $s2
-	add $t0, $t0, $s7
-	add $t0, $t0, $s5
-	sb $s4, 0($t0)
-	move $a0, $s6
+	bge $s4, $s3, false_solve				# if actions > num_colors -> return false
+
+	lw $t2, 40($sp)
+	add $t2, $t2, $s5								# t2 = &solution[num_cols*row + col]
+	sb $s4, 0($t2)									# solution[num_cols*row+col] = actions
+
+	move $a0, $s6										# arguments: row, col, puzzle, actions
 	move $a1, $s7
 	move $a2, $s0
 	move $a3, $s4
@@ -233,11 +236,11 @@ for_incr_solve:
 	j solve_for_loop
 
 false_solve:
-	li $v0, 0
+	li $v0, 0										# set return to false
 	j solved
 
 solved:
-	lw		$ra, 0($sp)
+	lw		$ra, 0($sp)						# reallocate memory for all 9 registers
 	lw		$s0, 4($sp)
 	lw		$s1, 8($sp)
 	lw		$s2, 12($sp)
@@ -246,6 +249,5 @@ solved:
 	lw		$s5, 24($sp)
 	lw		$s6, 28($sp)
 	lw		$s7, 32($sp)
-	lw 		$t0, 36($sp)
-	add		$sp, $sp, 40
-	jr $ra
+	add		$sp, $sp, 44					# reset stack pointer
+	jr $ra											# jump to return register
