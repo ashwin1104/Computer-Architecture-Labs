@@ -122,7 +122,6 @@ toggle_light:
 # $a1 solution
 # $a2 row
 # $a3 col
-
 .globl solve
 solve:
 	sub		$sp, $sp, 40							# allocating enough memory
@@ -134,9 +133,7 @@ solve:
 	sw		$s4, 20($sp)
 	sw		$s5, 24($sp)
 	sw		$s6, 28($sp)
-	sw		$s7, 32($sp)
-	sw		$t0, 36($t0)							# store 9 save registers
-
+	sw		$s7, 32($sp)							# store 8 save registers
 
 initialize:
 	add $s0, $a0, 0									# s0 = &puzzle
@@ -160,6 +157,7 @@ col_not_equal:
 	move $t0 $s6										# next_row = row
 
 row_col_greater:
+	sw $t0, 36($sp)
 	bge $s6, $s1, board_return
 	bge $s7, $s2, board_return
 	j solve_return
