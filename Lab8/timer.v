@@ -23,11 +23,11 @@ module timer(TimerInterrupt, cycle, TimerAddress,
     and a2(TimerWrite, address_is_equal, MemWrite);
     and a3(TimerRead, address_is_equal, MemRead);
 
-    register #(32, 32'hffffffff) interrupt_cycle(Q_interrupt, data, clock, TimerWrite, reset);
+    register #(32,32'hffffffff) interrupt_cycle(Q_interrupt, data, clock, TimerWrite, reset);
     register #(32) cycle_counter(Q_cycle, D_cycle, clock, 1'b1, reset);
     register #(1) interrupt_line(TimerInterrupt, 1'b1, clock, interrupt_enable, interrupt_reset);
     tristate t1(cycle, Q_cycle, TimerRead);
-    alu32 increment(D_cycle, , , 3'b010, Q_cycle, 32'b1);
+    alu32 increment(D_cycle, , , `ALU_ADD, Q_cycle, 32'b1);
 
     // complete the timer circuit here
 
