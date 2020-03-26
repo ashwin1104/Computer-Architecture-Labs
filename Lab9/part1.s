@@ -41,8 +41,11 @@ solution:   .byte 0:256
 #### Puzzle
 
 has_puzzle: .word 0
+has_timer: .word 0
 
 flashlight_space: .word 0
+
+scanner_wb: .byte 0 0 0 0
 
 .text
 main:
@@ -50,11 +53,142 @@ main:
     li      $t4, 0
     or      $t4, $t4, BONK_INT_MASK # request bonk
     or      $t4, $t4, REQUEST_PUZZLE_INT_MASK           # puzzle interrupt bit
+    or      $t4, $t4, TIMER_INT_MASK
     or      $t4, $t4, 1 # global enable
     mtc0    $t4, $12
-    
+
     #Fill in your code here
-    jr      $ra
+    li $t0, 10          # t0 = velocity = 10
+    sw $t0, VELOCITY
+
+    li $t0, 50     # t0 = angle = right
+    li $t1, 1       # t1 = angle_control = 1
+    sw $t0, ANGLE
+    sw $t1, ANGLE_CONTROL
+
+    lw $t2, TIMER     # t2 = time
+    addi $t2, $t2, 30000 # t2 += 8000
+    sw $t2, TIMER
+
+check_timer:
+    la $t3, has_timer   # t3 = &has_timer
+    lw $t4, 0($t3)      # t4 = has_timer
+    beq $t4, $0, check_timer
+    sw $0, 0($t3)
+
+transition_to_down:
+  sw $0, VELOCITY
+  li $t0, 10          # t0 = velocity = 10
+  sw $t0, VELOCITY
+  li $t0, 90     # t0 = angle = right
+  li $t1, 1        # t1 = angle_control = 1
+  sw $t0, ANGLE
+  sw $t1, ANGLE_CONTROL
+
+  lw $t2, TIMER     # t2 = time
+  addi $t2, $t2, 30000 # t2 += 8000
+  sw $t2, TIMER
+
+move_down:
+  la $t3, has_timer   # t3 = &has_timer
+  lw $t4, 0($t3)      # t4 = has_timer
+  beq $t4, $0, move_down
+  sw $0, 0($t3)
+
+transition_to_right:
+  sw $0, VELOCITY
+  li $t0, 10          # t0 = velocity = 10
+  sw $t0, VELOCITY
+  li $t0, 0     # t0 = angle = right
+  li $t1, 1        # t1 = angle_control = 1
+  sw $t0, ANGLE
+  sw $t1, ANGLE_CONTROL
+
+  lw $t2, TIMER     # t2 = time
+  addi $t2, $t2, 30000 # t2 += 8000
+  sw $t2, TIMER
+
+move_right:
+
+    la $t3, has_timer   # t3 = &has_timer
+    lw $t4, 0($t3)      # t4 = has_timer
+    # la $t5, scanner_wb
+    # sw $t5, USE_SCANNER
+    # lw $t5, USE_SCANNER
+    # li $t6, 2
+    # beq $t5, $t6, fire
+    beq $t4, $0, move_right
+    sw $0, 0($t3)
+    j fire;
+
+end:
+  jr      $ra
+
+fire:
+  sw $0, SHOOT_UDP_PACKET
+  j move_right_2_prep
+
+move_right_2_prep:
+      lw $t2, TIMER     # t2 = time
+      addi $t2, $t2, 30000 # t2 += 8000
+      sw $t2, TIMER
+
+move_right_2:
+      la $t3, has_timer   # t3 = &has_timer
+      lw $t4, 0($t3)      # t4 = has_timer
+      beq $t4, $0, move_right_2
+      sw $0, 0($t3)
+
+fire_2:
+sw $0, SHOOT_UDP_PACKET
+
+move_right_3_prep:
+      lw $t2, TIMER     # t2 = time
+      addi $t2, $t2, 30000 # t2 += 8000
+      sw $t2, TIMER
+
+move_right_3:
+      la $t3, has_timer   # t3 = &has_timer
+      lw $t4, 0($t3)      # t4 = has_timer
+      beq $t4, $0, move_right_3
+      sw $0, 0($t3)
+move_right_4_prep:
+            lw $t2, TIMER     # t2 = time
+            addi $t2, $t2, 30000 # t2 += 8000
+            sw $t2, TIMER
+
+move_right_4:
+            la $t3, has_timer   # t3 = &has_timer
+            lw $t4, 0($t3)      # t4 = has_timer
+            beq $t4, $0, move_right_4
+            sw $0, 0($t3)
+
+            fire_3:
+            la $t5, scanner_wb
+            sw $t5, USE_SCANNER
+                  sw $0, SHOOT_UDP_PACKET
+move_right_5_prep:
+                        lw $t2, TIMER     # t2 = time
+                        addi $t2, $t2, 30000 # t2 += 8000
+                        sw $t2, TIMER
+
+            move_right_5:
+                        la $t3, has_timer   # t3 = &has_timer
+                        lw $t4, 0($t3)      # t4 = has_timer
+                        beq $t4, $0, move_right_5
+                        sw $0, 0($t3)
+                        move_right_6_prep:
+                                    lw $t2, TIMER     # t2 = time
+                                    addi $t2, $t2, 30000 # t2 += 8000
+                                    sw $t2, TIMER
+
+                        move_right_6:
+                                    la $t3, has_timer   # t3 = &has_timer
+                                    lw $t4, 0($t3)      # t4 = has_timer
+                                    beq $t4, $0, move_right_6
+                                    sw $0, 0($t3)
+                                    j $ra
+
 
 .kdata
 chunkIH:    .space 40
@@ -114,12 +248,20 @@ interrupt_dispatch:                 # Interrupt:
 
 bonk_interrupt:
     sw      $0, BONK_ACK
-    #Fill in your bonk handler code here
-    j       interrupt_dispatch      # see if other interrupts are waiting
+    li $t2, 10
+    sw $t2, VELOCITY
+    lw $t0, ANGLE
+    add $t0, $t0, 20
+    sw $t0, ANGLE
+    li $t1, 1
+    sw $t1, ANGLE_CONTROL
+    j      interrupt_dispatch      # see if other interrupts are waiting
 
 timer_interrupt:
     sw      $0, TIMER_ACK
-    #Fill in your timer interrupt code here
+    la $t0, has_timer
+    li $t1, 1
+    sw $t1, 0($t0)
     j        interrupt_dispatch     # see if other interrupts are waiting
 
 request_puzzle_interrupt:
