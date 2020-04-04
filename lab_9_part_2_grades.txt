@@ -1,0 +1,6 @@
+Grades for version committed on time
+	part 2: 0.0 / 80.0
+		Your Spimbot timed out after running for five minutes!  Due to a bug in our implementation that allows spamming the scanner function, we have to strictly enforce our (very generous) timeouts for grading.  IF your Spimbot correctly completes the task, please submit a regrade request at https://forms.gle/3jcJk3sqJ5pYLgLRA so we can regrade your lab without the timeout (this will not affect your grade).  This bug will be fixed in the next Spimbot lab release, so please correct your overuse of the scanner function.
+Total: 0.0 / 80.0
+
+Final Score: 0.0 / 80.0
