@@ -1,20 +1,22 @@
 #include "cachesimulator.h"
+#include <iostream>
 
-Cache::Block* CacheSimulator::find_block(uint32_t address) const {
-  /**
-   * TODO
-   *
-   * 1. Use `_cache->get_blocks_in_set` to get all the blocks that could
-   *    possibly have `address` cached.
-   * 2. Loop through all these blocks to see if any one of them actually has
-   *    `address` cached (i.e. the block is valid and the tags match).
-   * 3. If you find the block, increment `_hits` and return a pointer to the
-   *    block. Otherwise, return NULL.
-   */
+Cache::Block *CacheSimulator::find_block(uint32_t address) const
+{
+  for (Cache::Block *b : _cache->get_blocks_in_set(extract_index(address, _cache->get_config())))
+  {
+    std::cout << "ADDY: " << address << std::endl;
+    if (b->is_valid() && b->get_tag() == extract_tag(address, _cache->get_config()))
+    {
+      _hits++;
+      return b;
+    }
+  }
   return NULL;
 }
 
-Cache::Block* CacheSimulator::bring_block_into_cache(uint32_t address) const {
+Cache::Block *CacheSimulator::bring_block_into_cache(uint32_t address) const
+{
   /**
    * TODO
    *
@@ -27,10 +29,37 @@ Cache::Block* CacheSimulator::bring_block_into_cache(uint32_t address) const {
    * 4. Update the `block`'s tag. Read data into it from memory. Mark it as
    *    valid. Mark it as clean. Return a pointer to the `block`.
    */
-  return NULL;
+  Cache::Block *lru;
+  uint32_t lru_time = -1;
+  for (Cache::Block *b : _cache->get_blocks_in_set(extract_index(address, _cache->get_config())))
+  {
+    if (!b->is_valid())
+    {
+      b->set_tag(extract_tag(address, _cache->get_config()));
+      b->read_data_from_memory(_memory);
+      b->mark_as_valid();
+      b->mark_as_clean();
+      return b;
+    }
+    uint32_t temp_time = b->get_last_used_time();
+    if (temp_time < lru_time || lru_time == -1)
+    {
+      lru_time = temp_time;
+      lru = b;
+    }
+  }
+  if (lru->is_dirty())
+  {
+    lru->write_data_to_memory(_memory);
+  }
+  lru->set_tag(extract_tag(address, _cache->get_config()));
+  lru->read_data_from_memory(_memory);
+  lru->mark_as_clean();
+  return lru;
 }
 
-uint32_t CacheSimulator::read_access(uint32_t address) const {
+uint32_t CacheSimulator::read_access(uint32_t address) const
+{
   /**
    * TODO
    *
@@ -39,10 +68,20 @@ uint32_t CacheSimulator::read_access(uint32_t address) const {
    * 3. Update the `last_used_time` for the `block`.
    * 4. Use `read_word_at_offset` to return the data at `address`.
    */
-  return 0;
+
+  Cache::Block *block = find_block(address);
+  if (!block)
+  {
+    block = bring_block_into_cache(address);
+  }
+  _use_clock++;
+
+  block->set_last_used_time(_use_clock.get_count());
+  return block->read_word_at_offset(extract_block_offset(address, _cache->get_config()));
 }
 
-void CacheSimulator::write_access(uint32_t address, uint32_t word) const {
+void CacheSimulator::write_access(uint32_t address, uint32_t word) const
+{
   /**
    * TODO
    *
@@ -56,4 +95,28 @@ void CacheSimulator::write_access(uint32_t address, uint32_t word) const {
    * 5. a. If the policy is write back, mark `block` as dirty.
    *    b. Otherwise, write `word` to `address` in memory.
    */
+  Cache::Block *block = find_block(address);
+  if (!block)
+  {
+    if (_policy.is_write_allocate())
+    {
+      block = bring_block_into_cache(address);
+    }
+    else
+    {
+      _memory->write_word(address, word);
+      return;
+    }
+  }
+  _use_clock++;
+  block->set_last_used_time(_use_clock.get_count());
+  block->write_word_at_offset(word, extract_block_offset(address, _cache->get_config()));
+  if (_policy.is_write_back())
+  {
+    block->mark_as_dirty();
+  }
+  else
+  {
+    _memory->write_word(address, word);
+  }
 }
