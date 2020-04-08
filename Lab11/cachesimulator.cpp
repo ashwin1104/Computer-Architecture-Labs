@@ -5,7 +5,6 @@ Cache::Block *CacheSimulator::find_block(uint32_t address) const
 {
   for (Cache::Block *b : _cache->get_blocks_in_set(extract_index(address, _cache->get_config())))
   {
-    std::cout << "ADDY: " << address << std::endl;
     if (b->is_valid() && b->get_tag() == extract_tag(address, _cache->get_config()))
     {
       _hits++;
@@ -54,6 +53,7 @@ Cache::Block *CacheSimulator::bring_block_into_cache(uint32_t address) const
   }
   lru->set_tag(extract_tag(address, _cache->get_config()));
   lru->read_data_from_memory(_memory);
+  lru->mark_as_valid();
   lru->mark_as_clean();
   return lru;
 }
