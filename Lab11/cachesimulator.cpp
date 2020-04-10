@@ -1,5 +1,4 @@
 #include "cachesimulator.h"
-#include <iostream>
 
 Cache::Block *CacheSimulator::find_block(uint32_t address) const
 {

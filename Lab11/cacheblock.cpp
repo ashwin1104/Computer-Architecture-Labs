@@ -1,5 +1,4 @@
 #include "cacheblock.h"
-#include <iostream>
 
 uint32_t Cache::Block::get_address() const
 {
