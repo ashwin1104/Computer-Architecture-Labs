@@ -1,0 +1,20 @@
+Regrade report for ashwins2 on Lab 9.2
+----------------------------------------
+
+Regrade timestamp: 4/4/2020 20:13:56
+Lab: Lab 9.2
+Problem description: When I run Qtspimbot for 9.2 both locally and with EWS, my lab works properly and scores me 80 points in a short time. That being said, I am a Mac user, though I don't think that should affect how it runs on EWS. My guy solves at least 5 puzzles, captures 5 hosts, and then shoots the opponent in the end - it passes the lab requirements and aligns with the existing rubric. I don't really have any idea why I got a zero on my lab - it says:
+
+"Your Spimbot timed out after running for five minutes!  Due to a bug in our implementation that allows spamming the scanner function, we have to strictly enforce our (very generous) timeouts for grading.  IF your Spimbot correctly completes the task, please submit a regrade request at https://forms.gle/3jcJk3sqJ5pYLgLRA so we can regrade your lab without the timeout (this will not affect your grade).  This bug will be fixed in the next Spimbot lab release, so please correct your overuse of the scanner function."
+
+I swear my Spimbot correctly completes the task very quickly, like within 5-10 seconds. I have screenshots I will include below, please let me know if there's any more information you need from me! Thank you so much.
+
+Also, if there is a mistake on my part that is causing this, please let me know. I really thought and still do believe I did this lab correctly.
+Staff talked to: 
+Commit hash: 
+
+----------------------------------------
+
+Staff grader: 
+New score: 80
+Notes: 
