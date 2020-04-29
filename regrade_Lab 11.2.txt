@@ -1,0 +1,14 @@
+Regrade report for ashwins2 on Lab 11.2
+----------------------------------------
+
+Regrade timestamp: 4/12/2020 22:19:35
+Lab: Lab 11.2
+Problem description: I did not know we were not supposed to use c++ libraries for MP 11 part 2. Christiaan suggested submitting a regrade request. I replaced the pow function with a for loop. Took me 4 commits since I initially changed 2^b to b^2. Then I forgot to delete the include statement. Thank you very much for the assistance. My partner (netID ashwins2) will probably also submit a regrade request soon.
+Staff talked to: 
+Commit hash: 
+
+----------------------------------------
+
+Staff grader: 
+New score: 80
+Notes: From csood2's regrade request
